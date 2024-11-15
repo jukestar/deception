@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {CdkDrag} from '@angular/cdk/drag-drop';
 import { bootstrapApplication } from '@angular/platform-browser';
 
 import { TileComponent } from './components/tile.component';
@@ -11,10 +12,16 @@ export type Tile = {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [TileComponent],
+  imports: [TileComponent, CdkDrag],
   template: `
     <h1>Deception game</h1>
     <dec-tile [tile]="causeOfDeath"></dec-tile>
+
+    <dec-tile [tile]="randomLocation"></dec-tile>
+
+    <div class="example-box" cdkDrag>
+      Drag me around
+    </div>
   `,
 })
 export class App {
@@ -76,6 +83,13 @@ export class App {
       ]
     }
   ];
+
+  randomLocation = getRandomElement(this.locations);
+}
+
+function getRandomElement<T>(arr: T[]): T {
+  const randomIndex = Math.floor(Math.random() * arr.length);
+  return arr[randomIndex];
 }
 
 bootstrapApplication(App);
