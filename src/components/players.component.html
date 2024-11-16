@@ -1,0 +1,27 @@
+<button (click)="myDialog.show()">+</button>
+
+<div>
+    @for (player of players; track player) {
+      <div style="margin-bottom: 4px; display: flex; flex-direction: column; gap: 8px; padding: 4px; background:#202020; border: 2px solid black;">
+        <div>
+          {{ player.name }}
+        </div>
+        <div>
+          @for (weapon of player.weapons; track weapon) {
+            <span style="padding: 2px; margin-right: 4px; color: black; background: pink; border-radius: 4px;">{{ weapon }}</span>
+          }
+        </div>
+        <div>
+          @for (evid of player.evidence; track evid) {
+            <span style="padding: 2px; margin-right: 4px; color: black; background: lightblue; border-radius: 4px;">{{ evid }}</span>
+          }
+        </div>
+      </div>
+    }
+</div>
+
+<dialog style="position: absolute; top: 1rem;" #myDialog>
+    <input type="text" #playerName>
+
+    <button (click)="addPlayer(playerName.value); playerName.value = ''; myDialog.close();">Add</button>
+</dialog>

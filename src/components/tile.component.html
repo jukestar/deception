@@ -1,0 +1,7 @@
+<h2>{{ tile?.title }}</h2>
+
+<ul cdkDropList (cdkDropListDropped)="drop($event)">
+    @for (clue of tile?.clues; track clue) {
+        <li [ngClass]="'c-' + color" cdkDrag>{{ clue }}</li>
+    }
+</ul>

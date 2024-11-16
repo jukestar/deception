@@ -1,0 +1,11 @@
+<dec-tile [color]="'purple'" [tile]="causeOfDeath"></dec-tile>
+
+<dec-tile [color]="'green'" [tile]="randomLocation"></dec-tile>
+
+@for (tile of firstFourCluesTiles; track tile.title) {
+    <dec-tile [color]="'orange'" [tile]="tile"></dec-tile>
+}
+
+<div class="example-box" cdkDrag>
+    Drag me around
+</div>
