@@ -1,4 +1,5 @@
 :host {
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -42,6 +43,7 @@ li {
 
 .c-not-active {
     color: gray;
+    font-style: italic;
 }
 
 .c-orange {

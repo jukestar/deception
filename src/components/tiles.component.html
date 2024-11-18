@@ -3,9 +3,9 @@
 <dec-tile [color]="'green'" [tile]="randomLocation"></dec-tile>
 
 @for (tile of firstFourCluesTiles; track tile.title) {
-    <dec-tile [color]="'orange'" [tile]="tile"></dec-tile>
+    <dec-tile [canBeReplaced]="canReplaceOneTile" [color]="'orange'" [tile]="tile" (replaceTile)="onReplaceTile(tile)"></dec-tile>
 }
 
-<div class="example-box" cdkDrag>
+<!-- <div class="example-box" cdkDrag>
     Drag me around
-</div>
+</div> -->

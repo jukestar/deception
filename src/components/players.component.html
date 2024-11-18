@@ -1,9 +1,13 @@
-@if (isAddingPlayers) {
-  <div style="margin-bottom: 1rem; display: flex; gap: 0.5rem;">
+<div style="margin-bottom: 1rem; display: flex; gap: 0.5rem;">
+  @if (isAddingPlayers) {
     <button  (click)="myDialog.show()">Add player +</button>
     <button (click)="startGame()">Start the game</button>
-  </div>
-}
+  }
+
+  @if (isFirstRound || isSecondRound) {
+    <button (click)="advance()">Advance</button>
+  }
+</div>
 
 <div>
     @for (player of players; track player) {
@@ -35,7 +39,7 @@
     }
 </div>
 
-<dialog style="position: absolute; top: 1rem;" #myDialog>
+<dialog style="z-index: 999; position: absolute; top: 1rem;" #myDialog>
     <input type="text" #playerName (keypress)="handleKeypress($event, myDialog, playerName)">
 
     <button (click)="addPlayer(playerName.value); playerName.value = ''; myDialog.close();">Add</button>

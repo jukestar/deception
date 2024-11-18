@@ -21,7 +21,7 @@ export enum GameState {
   template: `
     <div style="display: flex; gap: 0.5rem;">
       <dec-players [gameState]="gameState" (setGameState)="updateGameState($event)"></dec-players>
-      <dec-tiles></dec-tiles>
+      <dec-tiles [gameState]="gameState" (setGameState)="updateGameState($event)"></dec-tiles>
     </div>
   `
 })

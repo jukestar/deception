@@ -33,6 +33,23 @@ export class PlayersComponent {
       return this.gameState === GameState.AddPlayers;
     }
 
+    get isFirstRound(): boolean {
+      return this.gameState === GameState.FirstRound
+    }
+
+    get isSecondRound(): boolean {
+      return this.gameState === GameState.SecondRound
+    }
+
+    advance(): void {
+      if (this.isFirstRound) {
+        this.setGameState.emit(GameState.ReplaceFirstClueTile);
+      }
+      if (this.isSecondRound) {
+        this.setGameState.emit(GameState.ReplaceSecondClueTile);
+      }
+    }
+
     provideGuess(player: Player, hasGuessedAlready: boolean): void {
       if (hasGuessedAlready) {
         if (window.confirm("Are you sure? Only on guess for the entire game per player!")) {
@@ -62,10 +79,10 @@ export class PlayersComponent {
   }
 
   startGame(): void {
-    if (this.players.length > 1) {
+    if (this.players.length > 2) {
       this.setGameState.emit(GameState.FirstRound);
     } else {
-      alert("Too few players, add more!");
+      alert("Too few players, add more! Need atleast 3 players in addition to the Forensic scientist");
     }
   }
 }

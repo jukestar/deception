@@ -1,6 +1,7 @@
-import { Component, Input } from "@angular/core";
+import { Component, EventEmitter, Input, Output } from "@angular/core";
 import {CdkDrag, CdkDropList, CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import { CommonModule } from "@angular/common";
+import { Tile } from "./tiles.component";
 
 type Color = "orange" | "purple" | "green";
 
@@ -13,15 +14,25 @@ type Color = "orange" | "purple" | "green";
 })
 export class TileComponent {
     @Input()
-    tile: any;
+    canBeReplaced: boolean = false;
+
+    @Input()
+    tile: Tile | null = null;
 
     @Input()
     color: Color = "orange";
 
+    @Output()
+    replaceTile = new EventEmitter<void>();
+
     activeClue = "";
 
-    drop(event: CdkDragDrop<string[]>) {
-        moveItemInArray(this.tile.clues, event.previousIndex, event.currentIndex);
+    // drop(event: CdkDragDrop<string[]>) {
+    //     moveItemInArray(this.tile.clues, event.previousIndex, event.currentIndex);
+    // }
+
+    replace(): void {
+        this.replaceTile.emit();
     }
 
     setClueAsActive(clue: string): void {

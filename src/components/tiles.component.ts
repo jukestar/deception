@@ -1,8 +1,9 @@
-import { Component, Input } from "@angular/core";
+import { Component, EventEmitter, Input, Output } from "@angular/core";
 import {CdkDrag, CdkDropList, CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import { CommonModule } from "@angular/common";
 import { TileComponent } from './tile.component';
-import { getRandomElement, shuffleArray } from "../helpers/functions";
+import { getRandomElement, pickAndRemove, shuffleArray } from "../helpers/functions";
+import { GameState } from "../main";
 
 export type Tile = {
     title: string;
@@ -17,10 +18,31 @@ export type Tile = {
     templateUrl: "tiles.component.html"
 })
 export class TilesComponent {
+  @Input()
+  gameState: GameState | null = null;
+
+  @Output()
+  setGameState = new EventEmitter<GameState>();
+  
     causeOfDeath = getCauseOfDeath();
     randomLocation = getLocation();
     allClueTiles = clueTiles();
     firstFourCluesTiles = this.allClueTiles.slice(0, 4);
+
+    get canReplaceOneTile(): boolean {
+      return this.gameState === GameState.ReplaceFirstClueTile || this.gameState === GameState.ReplaceSecondClueTile;
+    }
+
+    onReplaceTile(tileToBeReplaced: Tile): void {
+      this.firstFourCluesTiles = this.firstFourCluesTiles.filter(item => item !== tileToBeReplaced);
+      this.firstFourCluesTiles = [...this.firstFourCluesTiles, ...pickAndRemove(this.allClueTiles, 1)];
+
+      if (this.gameState === GameState.ReplaceFirstClueTile) {
+        this.setGameState.emit(GameState.SecondRound);
+      } else if (this.gameState === GameState.ReplaceSecondClueTile) {
+        this.setGameState.emit(GameState.ThirdRound);
+      }
+    }
 }
 
 
@@ -174,7 +196,7 @@ function clueTiles(): Tile[] {
         },
         {
           "title": "Motive of crime",
-          "clues": ["Hatred", "Power/Money", "Lovers", "Jealousy", "Justice"]
+          "clues": ["Hatred", "Power", "Money", "Lovers", "Jealousy", "Justice"]
         }
       ];
 
