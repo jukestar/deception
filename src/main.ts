@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {CdkDrag} from '@angular/cdk/drag-drop';
+import { provideAnimations } from '@angular/platform-browser/animations';
 import { bootstrapApplication } from '@angular/platform-browser';
 
 import { TilesComponent } from './components/tiles.component';
@@ -29,9 +30,12 @@ export class App {
   gameState: GameState = GameState.AddPlayers;
 
   updateGameState(state: GameState): void {
-    console.log(state);
     this.gameState = state; // TODO Validate the value?
   }
 }
 
-bootstrapApplication(App);
+    bootstrapApplication(App, {
+        providers: [
+          provideAnimations()
+        ]
+     })

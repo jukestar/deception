@@ -4,18 +4,42 @@ import { CommonModule } from "@angular/common";
 import { TileComponent } from './tile.component';
 import { getRandomElement, pickAndRemove, shuffleArray } from "../helpers/functions";
 import { GameState } from "../main";
+import { trigger, transition, style, animate, query, stagger } from "@angular/animations";
 
 export type Tile = {
     title: string;
     clues: string[];
 }
 
+// const listAnimation = trigger('listAnimation', [
+//   transition('* <=> *', [
+//     query(':enter',
+//       [style({ opacity: 0 }), stagger('1000ms', animate('1000ms ease-out', style({ opacity: 1 })))],
+//       { optional: true }
+//     ),
+//     query(':leave',
+//       animate('2.00ms', style({ opacity: 0 })),
+//       { optional: true}
+//     )
+//   ])
+// ]);
+
 @Component({
     standalone: true,
     imports: [CdkDrag, CdkDropList, CommonModule, TileComponent],
     styleUrl: "tiles.component.scss",
     selector: "dec-tiles",
-    templateUrl: "tiles.component.html"
+    templateUrl: "tiles.component.html",
+  //   animations: [
+  //     listAnimation,
+  //     trigger("fadeInOut", [
+  //         transition(":enter", [
+  //           style({ opacity: 0 }),
+  //           animate("1000ms 1000ms", style({ opacity: 1 }))
+  //         ]),
+  //         transition(":leave", [animate(1000, style({ opacity: 0 }))])
+  //       ])
+  // ]
 })
 export class TilesComponent {
   @Input()
@@ -27,21 +51,35 @@ export class TilesComponent {
     causeOfDeath = getCauseOfDeath();
     randomLocation = getLocation();
     allClueTiles = clueTiles();
-    firstFourCluesTiles = this.allClueTiles.slice(0, 4);
+    firstFourCluesTiles =  pickAndRemove(this.allClueTiles, 4);
+
+    constructor() {
+      console.log(this.allClueTiles);
+      console.log(this.firstFourCluesTiles)
+    }
+
+    get gameHasStarted(): boolean {
+      return this.gameState !== null && this.gameState !== GameState.AddPlayers;
+    }
 
     get canReplaceOneTile(): boolean {
       return this.gameState === GameState.ReplaceFirstClueTile || this.gameState === GameState.ReplaceSecondClueTile;
     }
 
     onReplaceTile(tileToBeReplaced: Tile): void {
-      this.firstFourCluesTiles = this.firstFourCluesTiles.filter(item => item !== tileToBeReplaced);
-      this.firstFourCluesTiles = [...this.firstFourCluesTiles, ...pickAndRemove(this.allClueTiles, 1)];
 
-      if (this.gameState === GameState.ReplaceFirstClueTile) {
-        this.setGameState.emit(GameState.SecondRound);
-      } else if (this.gameState === GameState.ReplaceSecondClueTile) {
-        this.setGameState.emit(GameState.ThirdRound);
-      }
+      this.firstFourCluesTiles = this.firstFourCluesTiles.filter(item => item !== tileToBeReplaced);
+
+      setTimeout(() => {
+
+        this.firstFourCluesTiles = [...this.firstFourCluesTiles, ...pickAndRemove(this.allClueTiles, 1)];
+  
+        if (this.gameState === GameState.ReplaceFirstClueTile) {
+          this.setGameState.emit(GameState.SecondRound);
+        } else if (this.gameState === GameState.ReplaceSecondClueTile) {
+          this.setGameState.emit(GameState.ThirdRound);
+        }
+      }, 1000);
     }
 }
 

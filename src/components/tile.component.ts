@@ -1,7 +1,9 @@
-import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { Component, EventEmitter, HostBinding, Input, Output } from "@angular/core";
 import {CdkDrag, CdkDropList, CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import { CommonModule } from "@angular/common";
 import { Tile } from "./tiles.component";
+import { GameState } from "../main";
+import { animate, style, transition, trigger } from "@angular/animations";
 
 type Color = "orange" | "purple" | "green";
 
@@ -10,9 +12,13 @@ type Color = "orange" | "purple" | "green";
     imports: [CdkDrag, CdkDropList, CommonModule],
     styleUrl: "tile.component.scss",
     selector: "dec-tile",
-    templateUrl: "tile.component.html"
+    templateUrl: "tile.component.html",
+    
 })
 export class TileComponent {
+    @Input()
+  gameState: GameState | null = null;
+  
     @Input()
     canBeReplaced: boolean = false;
 
@@ -36,6 +42,10 @@ export class TileComponent {
     }
 
     setClueAsActive(clue: string): void {
+        if (this.gameState === GameState.AddPlayers) {
+            return;
+        }
+
         if (this.activeClue === "") {
             this.activeClue = clue;
         } else {

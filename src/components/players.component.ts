@@ -33,6 +33,26 @@ export class PlayersComponent {
       return this.gameState === GameState.AddPlayers;
     }
 
+    get gameStateText(): string {
+      switch (this.gameState) {
+        case GameState.AddPlayers:
+          return "Add all the players. Start the game when ready."
+        case GameState.FirstRound:
+          return "First round. Provide clues. Advance when discussion is finished.";
+        case GameState.ReplaceFirstClueTile:
+          return "Replace an orange clue tile";
+        case GameState.SecondRound:
+          return "Second round. Provide a clue for the new tile. Advance when discussion is finished.";
+        case GameState.ReplaceSecondClueTile:
+          return "Replace another orange clue tile";
+        case GameState.ThirdRound:
+          return "Third and final round. Provide a clue for the new tile.";
+
+        default:
+          return "";
+      }
+    }
+
     get isFirstRound(): boolean {
       return this.gameState === GameState.FirstRound
     }
