@@ -36,6 +36,14 @@ li {
     width: -webkit-fill-available;
 }
 
+.c-is-active {
+    font-weight: bolder;
+}
+
+.c-not-active {
+    color: gray;
+}
+
 .c-orange {
     background: linear-gradient(0deg, rgba(88,71,46,1) 0%, rgba(45,35,20,1) 10%, #202020 100%);
 }

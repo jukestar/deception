@@ -20,7 +20,6 @@ export class TilesComponent {
     causeOfDeath = getCauseOfDeath();
     randomLocation = getLocation();
     allClueTiles = clueTiles();
-
     firstFourCluesTiles = this.allClueTiles.slice(0, 4);
 }
 

@@ -1,7 +1,8 @@
-import { Component, Input } from "@angular/core";
-import {CdkDrag, CdkDropList, CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
 import { CommonModule } from "@angular/common";
-import { shuffleArray, pickAndRemove } from "../helpers/functions";
+import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { pickAndRemove, shuffleArray } from "../helpers/functions";
+import { GameState } from "../main";
 
 type Player = {
   name: string;
@@ -18,9 +19,29 @@ type Player = {
     templateUrl: "players.component.html"
 })
 export class PlayersComponent {
+  @Input()
+  gameState: GameState | null = null;
+
+  @Output()
+  setGameState = new EventEmitter<GameState>();
+
     players: Player[] = [];
     weapons = shuffleArray(allWeapons());
     keyEvidence = shuffleArray(allKeyEvidence()); 
+
+    get isAddingPlayers(): boolean {
+      return this.gameState === GameState.AddPlayers;
+    }
+
+    provideGuess(player: Player, hasGuessedAlready: boolean): void {
+      if (hasGuessedAlready) {
+        if (window.confirm("Are you sure? Only on guess for the entire game per player!")) {
+          player.hasGuessed = false;
+        }
+      } else {
+        player.hasGuessed = true;
+      }
+    }
 
   addPlayer(name: string): void {
     this.players.push({
@@ -29,6 +50,23 @@ export class PlayersComponent {
       evidence: pickAndRemove(this.keyEvidence, 4),
       hasGuessed: false
     });
+  }
+
+  handleKeypress(event: KeyboardEvent, dialog: HTMLDialogElement, nameInput: HTMLInputElement): void {
+    if (event.key === "Enter") {
+      this.addPlayer(nameInput.value);
+      nameInput.value = "";
+      dialog.close();
+      
+    }
+  }
+
+  startGame(): void {
+    if (this.players.length > 1) {
+      this.setGameState.emit(GameState.FirstRound);
+    } else {
+      alert("Too few players, add more!");
+    }
   }
 }
 
@@ -191,10 +229,12 @@ function allWeapons(): string[] {
     "Throwing Stars",
     "Blowgun",
     "Bo Staff",
+    "Bear Trap",
     "Claymore",
     "Halberd",
     "War Hammer",
     "Tomahawk",
+    "Grenade",
     "Sling",
     "Caltrops",
     "Brass Knuckles",

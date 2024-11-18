@@ -18,7 +18,23 @@ export class TileComponent {
     @Input()
     color: Color = "orange";
 
+    activeClue = "";
+
     drop(event: CdkDragDrop<string[]>) {
         moveItemInArray(this.tile.clues, event.previousIndex, event.currentIndex);
+    }
+
+    setClueAsActive(clue: string): void {
+        if (this.activeClue === "") {
+            this.activeClue = clue;
+        } else {
+            if (window.confirm("Are you sure? Changing the selected clue on a tile is not allowed!")) {
+                this.activeClue = clue;
+            }
+        }
+    }
+
+    getIsActiveClue(clue: string): boolean {
+        return this.activeClue === clue;
     }
 }
