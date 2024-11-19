@@ -1,5 +1,5 @@
 <h4 style="margin-bottom: 4px;">{{gameStateText}}</h4>
-<div style="margin-bottom: 1rem; display: flex; gap: 0.5rem;">
+<div style="height: 22px; margin-bottom: 1rem; display: flex; gap: 0.5rem;">
   @if (isAddingPlayers) {
     <button  (click)="myDialog.show()">Add player +</button>
     <button (click)="startGame()">Start the game</button>
@@ -10,20 +10,27 @@
   }
 </div>
 
-<div>
+<div style="display: flex; flex-wrap: wrap; gap: 1rem;">
     @for (player of players; track player) {
-      <div style="position: relative; margin-bottom: 8px; display: flex; flex-direction: column; gap: 8px; padding: 4px; background:#202020; border: 2px solid black;">
+      <div style="position: relative; min-width: 20rem; margin-bottom: 8px; display: flex; flex-direction: column; gap: 8px; padding: 4px; background:#202020; border: 2px solid black;">
         <div>
           {{ player.name }}
         </div>
-        <div style="margin-bottom: 8px;">
-          @for (weapon of player.weapons; track weapon) {
-            <span style="padding: 4px; margin-right: 8px; color: black; background: pink; border-radius: 4px;">{{ weapon }}</span>
+        <div style="justify-content: space-around; display: flex; flex-wrap: wrap; margin-bottom: 8px; gap: 0.5rem;">
+          @for (weapon of player.weapons; track weapon.name) {
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem">
+              <span style="padding: 4px; font-weight: bold; white-space: nowrap; color: black; background: pink; border-radius: 4px;">{{ weapon.name }}
+              </span>
+              <div style="width: 3rem; height: 3rem;" [innerHtml]="getSvg(weapon.svgUrl)"></div>
+            </div>
           }
         </div>
-        <div style="padding-bottom: 4px;">
-          @for (evid of player.evidence; track evid) {
-            <span style="padding: 4px; margin-right: 8px; color: black; background: lightblue; border-radius: 4px;">{{ evid }}</span>
+        <div style="justify-content: space-around; display: flex; flex-wrap: wrap; padding-bottom: 4px; gap: 0.5rem;">
+          @for (evid of player.evidence; track evid.name) {
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem">
+              <span style="padding: 4px; white-space: nowrap; font-weight: bold; color: black; background: lightblue; border-radius: 4px;">{{ evid.name }}</span>
+              <div style="width: 3rem; height: 3rem;" [innerHtml]="getSvg(evid.svgUrl)"></div>
+            </div>
           }
         </div>
 
