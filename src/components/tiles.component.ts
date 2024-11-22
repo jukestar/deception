@@ -53,10 +53,7 @@ export class TilesComponent {
     allClueTiles = clueTiles();
     firstFourCluesTiles =  pickAndRemove(this.allClueTiles, 4);
 
-    constructor() {
-      console.log(this.allClueTiles);
-      console.log(this.firstFourCluesTiles)
-    }
+    private _isReplacing = false;
 
     get gameHasStarted(): boolean {
       return this.gameState !== null && this.gameState !== GameState.AddPlayers;
@@ -67,7 +64,11 @@ export class TilesComponent {
     }
 
     onReplaceTile(tileToBeReplaced: Tile): void {
-
+      if (this._isReplacing === true) {
+        return;
+      }
+      
+      this._isReplacing = true;
       this.firstFourCluesTiles = this.firstFourCluesTiles.filter(item => item !== tileToBeReplaced);
 
       setTimeout(() => {
@@ -79,6 +80,7 @@ export class TilesComponent {
         } else if (this.gameState === GameState.ReplaceSecondClueTile) {
           this.setGameState.emit(GameState.ThirdRound);
         }
+        this._isReplacing = false;
       }, 1000);
     }
 }

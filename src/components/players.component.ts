@@ -38,7 +38,6 @@ export class PlayersComponent {
     private readonly _sanitizer = inject(DomSanitizer);
 
     getSvg(text: string): SafeHtml {
-      console.log(text);
       return this._sanitizer.bypassSecurityTrustHtml(text);
     }
 

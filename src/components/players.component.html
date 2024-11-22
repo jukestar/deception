@@ -1,12 +1,12 @@
 <h4 style="margin-bottom: 4px;">{{gameStateText}}</h4>
 <div style="height: 22px; margin-bottom: 1rem; display: flex; gap: 0.5rem;">
   @if (isAddingPlayers) {
-    <button  (click)="myDialog.show()">Add player +</button>
-    <button (click)="startGame()">Start the game</button>
+    <button  class="button" (click)="myDialog.show()">Add player +</button>
+    <button class="button" (click)="startGame()">Start the game</button>
   }
 
   @if (isFirstRound || isSecondRound) {
-    <button (click)="advance()">Advance</button>
+    <button class="button" (click)="advance()">Advance</button>
   }
 </div>
 
