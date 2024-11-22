@@ -20,7 +20,7 @@ export enum GameState {
   standalone: true,
   imports: [TilesComponent, PlayersComponent],
   template: `
-    <div style="display: flex; gap: 0.5rem;">
+    <div style="display: flex; gap: 0.5rem; flex-direction: column;">
       <dec-players [gameState]="gameState" (setGameState)="updateGameState($event)"></dec-players>
       <dec-tiles [gameState]="gameState" (setGameState)="updateGameState($event)"></dec-tiles>
     </div>
